@@ -4,6 +4,11 @@ const allProducts = [
   { id: 3, name: "Escudo do Capitão América" },
 ];
 
+const validName = 'ProdutoX';
+const invalidName = "Prod";
+
 module.exports = {
   allProducts,
+  validName,
+  invalidName,
 };
