@@ -21,7 +21,7 @@ const create = async (productName) => {
   if (error.type) return error;
 
   const newProductId = await productsModel.insert(productName);
-  const newProduct = await productsModel.findById(newProductId);
+  const newProduct = await productsModel.getById(newProductId);
 
   return { type: null, message: newProduct };
 };

@@ -66,7 +66,7 @@ describe("Verificando service de produto", () => {
       sinon.stub(productsModel, "insert").resolves(1);
       sinon.stub(productsModel, "getById").resolves(allProducts[0]);
 
-      const result = await productsService.createProducts(validName);
+      const result = await productsService.create(validName);
 
       expect(result.type).to.equal(null);
       expect(result.message).to.deep.equal(allProducts[0]);
@@ -75,7 +75,7 @@ describe("Verificando service de produto", () => {
 
   describe("cadastro de um produto com valores inválidos", () => {
     it("retorna um erro ao passar um nome inválido", async () => {
-      const result = await passengerService.createPassenger(invalidName);
+      const result = await productsService.create(invalidName);
 
       expect(result.type).to.equal("INVALID_VALUE");
       expect(result.message).to.equal(
