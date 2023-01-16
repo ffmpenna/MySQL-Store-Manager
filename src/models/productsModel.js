@@ -6,6 +6,13 @@ const getAll = async () => {
   return products;
 };
 
+const getById = async (productId) => {
+  const query = 'SELECT * FROM StoreManager.products WHERE id = ?';
+  const [[product]] = await connection.execute(query, [productId]);
+  return product;
+};
+
 module.exports = {
   getAll,
+  getById,
 };
