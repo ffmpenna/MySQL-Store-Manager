@@ -1,5 +1,3 @@
-require('dotenv').config();
-
 const mysql = require('mysql2/promise');
 
 const connection = mysql.createPool({
@@ -9,6 +7,4 @@ const connection = mysql.createPool({
   database: process.env.MYSQL_DATABASE || 'StoreManager',
 });
 
-module.exports = {
-  connection,
-};
+module.exports = connection;
