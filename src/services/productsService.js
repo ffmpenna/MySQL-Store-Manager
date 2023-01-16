@@ -16,7 +16,18 @@ const getById = async (productId) => {
   return { type: null, message: product };
 };
 
+const create = async (productName) => {
+  const error = schema.validadeName(productName);
+  if (error.type) return error;
+
+  const newProductId = await productsModel.insert(productName);
+  const newProduct = await productsModel.findById(newProductId);
+
+  return { type: null, message: newProduct };
+};
+
 module.exports = {
   getAll,
   getById,
+  create,
 };
