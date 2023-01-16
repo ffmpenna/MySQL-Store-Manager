@@ -9,7 +9,24 @@ const allProductsResponse = [
   { id: 3, name: "Escudo do Capitão América" },
 ];
 
+const newProductResponse = {
+  id: 4,
+  name: "ProdutoX",
+};
+
+const productMock = {
+  name: 'ProdutoX',
+}
+
+const wrongSizeProductBody = { name: "Prod" };
+
+const wrongProductBody = {};
+
 module.exports = {
   productResponse,
   allProductsResponse,
+  newProductResponse,
+  productMock,
+  wrongSizeProductBody,
+  wrongProductBody,
 };
