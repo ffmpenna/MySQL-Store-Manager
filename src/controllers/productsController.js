@@ -2,11 +2,9 @@ const productsService = require('../services/productsService');
 const errorMap = require('../utils/errorMap');
 
 const listProducts = async (_req, res) => {
-  const { type, message } = await productsService.getAll();
-  
-  if (type) return res.status(errorMap.mapError(type)).json({ message });
+  const { message } = await productsService.getAll();
 
-  res.status(200).json({ message });
+  res.status(200).json(message);
 };
 
 const getProduct = async (req, res) => { 
@@ -15,7 +13,7 @@ const getProduct = async (req, res) => {
 
   if (type) return res.status(errorMap.mapError(type)).json({ message });
 
-  res.status(200).json({ message });
+  res.status(200).json(message);
 };
 
 module.exports = {
