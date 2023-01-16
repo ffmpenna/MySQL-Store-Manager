@@ -87,7 +87,7 @@ describe("Teste de unidade do productsController.", () => {
         .stub(productsService, "create")
         .resolves({ type: null, message: newProductResponse });
 
-      await productsService.create(res, req);
+      await productsController.createProduct(req, res);
 
       expect(res.status).to.have.been.calledWith(201);
       expect(res.json).to.have.been.calledWith(newProductResponse);
