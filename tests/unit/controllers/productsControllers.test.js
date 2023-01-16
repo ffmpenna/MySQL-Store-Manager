@@ -106,7 +106,7 @@ describe("Teste de unidade do productsController.", () => {
         message: '"name" length must be at least 5 characters long',
       });
 
-      await passengerController.createPassenger(req, res);
+      await productsController.createProduct(req, res);
 
       expect(res.status).to.have.been.calledWith(422);
       expect(res.json).to.have.been.calledWith({
@@ -127,7 +127,7 @@ describe("Teste de unidade do productsController.", () => {
         message: '"name" is required',
       });
 
-      await passengerController.createPassenger(req, res);
+      await productsController.createProduct(req, res);
 
       expect(res.status).to.have.been.calledWith(400);
       expect(res.json).to.have.been.calledWith({
