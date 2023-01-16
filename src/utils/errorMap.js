@@ -1,4 +1,5 @@
 const errorMap = {
+  INVALID_VALUE: '422',
   PRODUCT_NOT_FOUND: '404',
 };
 
