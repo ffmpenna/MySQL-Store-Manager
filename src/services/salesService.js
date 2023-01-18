@@ -3,8 +3,14 @@ const newSaleFormatter = require('../utils/newSaleFormatter');
 const schema = require('./validations/validationsInputValues');
 
 const getAll = async () => {
-const sales = await salesModel.getAll();
-return { type: null, message: sales };
+  const sales = await salesModel.getAll();
+  return { type: null, message: sales };
+};
+
+const getById = async (id) => {
+  const sale = await salesModel.getById(id);
+  if (!sale.length) return { type: 'SALE_NOT_FOUND', message: 'Sale not found' };
+  return { type: null, message: sale };
 };
 
 const create = async (saleData) => {
@@ -22,4 +28,5 @@ const create = async (saleData) => {
 module.exports = {
   create,
   getAll,
+  getById,
 };
