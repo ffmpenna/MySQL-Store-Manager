@@ -7,6 +7,8 @@ const {
   saleCreateResponse,
   wrongZeroQuantityBody,
   nonexistentProductIdBody,
+  allSalesResponse,
+  saleResponse,
 } = require('./mocks/salesServicesMock');
 
 describe('Verificando service de produto', () => {
@@ -39,6 +41,40 @@ describe('Verificando service de produto', () => {
       );
     })
   });
+
+  describe('Listar vendas.', () => {
+    it('Retorna a lista completa de vendas', async () => {
+      sinon.stub(salesModel, "getAll").resolves(allSalesResponse);
+
+      const result = await salesService.getAll();
+
+      expect(result.type).to.be.equal(null);
+      expect(result.message).to.deep.equal(allSalesResponse);
+    })
+  });
+
+  describe('Listar venda por id', () => { 
+    it('Retorna os dados da venda', async () => {
+      // arrange
+      sinon.stub(productsModel, 'getById').resolves(saleResponse);
+
+      // act
+      const result = await productsService.getById(1);
+
+      // assert
+      expect(result.type).to.equal(null);
+      expect(result.message).to.deep.equal(saleResponse);
+    });
+    
+    it('Retorna erro caso id não exista', async () => {
+      sinon.stub(salesModel, 'getById').resolves(undefined);
+
+      const result = await salesModel.getById(999);
+
+      expect(result.type).to.equal('SALE_NOT_FOUND');
+      expect(result.message).to.equal('Sale not found');
+    })
+   })
 
   afterEach(function () {
     sinon.restore();
