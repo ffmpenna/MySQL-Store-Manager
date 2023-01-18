@@ -2,6 +2,11 @@ const { salesModel } = require('../models');
 const newSaleFormatter = require('../utils/newSaleFormatter');
 const schema = require('./validations/validationsInputValues');
 
+const getAll = async () => {
+const sales = await salesModel.getAll();
+return { type: null, message: sales };
+};
+
 const create = async (saleData) => {
   let error = schema.validateSalesFields(saleData);
   if (error.type) return error;
@@ -16,4 +21,5 @@ const create = async (saleData) => {
 
 module.exports = {
   create,
+  getAll,
 };
