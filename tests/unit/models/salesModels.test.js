@@ -17,7 +17,7 @@ describe("Testes de unidade do model de vendas", () => {
   });
 
   it('Recuperando uma lista de venda', async () => {
-    sinon.stub(connection, 'execute').resolves(allSalesResponse);
+    sinon.stub(connection, 'execute').resolves([allSalesResponse]);
 
     const result = await salesModel.getAll();
 
@@ -25,7 +25,7 @@ describe("Testes de unidade do model de vendas", () => {
   });
 
   it('Recuperando uma venda por Id', async () => {
-    sinon.stub(connection, 'execute').resolves(saleResponse)
+    sinon.stub(connection, 'execute').resolves([saleResponse])
 
     const result = await salesModel.getById(saleResponse);
 
