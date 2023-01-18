@@ -22,6 +22,11 @@ const wrongSizeProductBody = { name: "Prod" };
 
 const wrongProductBody = {};
 
+const updatedProductRespense = {
+  id: 1,
+  name: "Martelo do Batman"
+}
+
 module.exports = {
   productResponse,
   allProductsResponse,
@@ -29,4 +34,5 @@ module.exports = {
   productMock,
   wrongSizeProductBody,
   wrongProductBody,
+  updatedProductRespense,
 };

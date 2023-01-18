@@ -7,8 +7,14 @@ const allProducts = [
 const validName = 'ProdutoX';
 const invalidName = "Prod";
 
+const updatedProductRespense = {
+  id: 1,
+  name: 'Martelo do Batman',
+};
+
 module.exports = {
   allProducts,
   validName,
   invalidName,
+  updatedProductRespense,
 };
