@@ -56,10 +56,10 @@ describe('Verificando service de produto', () => {
   describe('Listar venda por id', () => { 
     it('Retorna os dados da venda', async () => {
       // arrange
-      sinon.stub(productsModel, 'getById').resolves(saleResponse);
+      sinon.stub(salesModel, 'getById').resolves(saleResponse);
 
       // act
-      const result = await productsService.getById(1);
+      const result = await salesService.getById(1);
 
       // assert
       expect(result.type).to.equal(null);

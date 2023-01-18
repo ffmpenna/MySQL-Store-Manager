@@ -83,7 +83,7 @@ describe('Teste de unidade do salesController.', () => {
       res.status = sinon.stub().returns(res);
       res.json = sinon.stub().returns();
       sinon
-        .stub(salesServices, 'getAll')
+        .stub(salesService, 'getAll')
         .resolves({ type: null, message: allSalesResponse });
 
       await salesController.listSales(req, res);
@@ -102,7 +102,7 @@ describe('Teste de unidade do salesController.', () => {
       res.status = sinon.stub().returns(res);
       res.json = sinon.stub().returns();
       sinon
-        .stub(salesServices, 'getById')
+        .stub(salesService, 'getById')
         .resolves({ type: null, message: saleResponse });
 
       await salesController.listSales(req, res);
@@ -119,7 +119,7 @@ describe('Teste de unidade do salesController.', () => {
       res.status = sinon.stub().returns(res);
       res.json = sinon.stub().returns();
       sinon
-        .stub(salesServices, 'getById')
+        .stub(salesService, 'getById')
         .resolves({ type: 'SALE_NOT_FOUND', message: 'Sale not found' });
 
       await salesController.listSales(req, res);
