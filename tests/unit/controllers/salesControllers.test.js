@@ -105,7 +105,7 @@ describe('Teste de unidade do salesController.', () => {
         .stub(salesService, 'getById')
         .resolves({ type: null, message: saleResponse });
 
-      await salesController.listSales(req, res);
+      await salesController.getSale(req, res);
 
       expect(res.status).to.have.been.calledWith(200);
       expect(res.json).to.have.been.calledWith(saleResponse);
@@ -122,7 +122,7 @@ describe('Teste de unidade do salesController.', () => {
         .stub(salesService, 'getById')
         .resolves({ type: 'SALE_NOT_FOUND', message: 'Sale not found' });
 
-      await salesController.listSales(req, res);
+      await salesController.getSale(req, res);
 
       expect(res.status).to.have.been.calledWith(404);
       expect(res.json).to.have.been.calledWith({ message: 'Sale not found' });
