@@ -67,9 +67,9 @@ describe('Verificando service de produto', () => {
     });
     
     it('Retorna erro caso id não exista', async () => {
-      sinon.stub(salesModel, 'getById').resolves(undefined);
+      sinon.stub(salesModel, 'getById').resolves([]);
 
-      const result = await salesModel.getById(999);
+      const result = await salesService.getById(999);
 
       expect(result.type).to.equal('SALE_NOT_FOUND');
       expect(result.message).to.equal('Sale not found');
