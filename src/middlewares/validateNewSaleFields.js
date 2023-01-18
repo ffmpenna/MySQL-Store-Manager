@@ -8,7 +8,7 @@ module.exports = (req, res, next) => {
       .status(errorMap.mapError('BAD_REQUEST'))
       .json({ message: '"productId" is required' });
   }
-  if (saleData.some(({ quantity }) => !quantity)) {
+  if (saleData.some(({ quantity }) => !quantity && quantity !== 0)) {
     return res
       .status(errorMap.mapError('BAD_REQUEST'))
       .json({ message: '"quantity" is required' });
