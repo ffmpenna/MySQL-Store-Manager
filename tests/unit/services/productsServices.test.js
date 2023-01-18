@@ -7,6 +7,7 @@ const {
   allProducts,
   validName,
   invalidName,
+  updatedProductRespense,
 } = require("./mocks/productsServicesMocks");
 
 describe("Verificando service de produto", () => {
@@ -81,6 +82,32 @@ describe("Verificando service de produto", () => {
       expect(result.message).to.equal(
         '"name" length must be at least 5 characters long'
       );
+    });
+  });
+
+  describe('Atualizando um produto com valores válidos.', () => {
+    it('Retorna o Id do produto atualizado', async () => {
+      sinon.stub(productsModel, 'update').resolves(1);
+      sinon.stub(productsModel, 'getById').resolves(updatedProductRespense);
+
+      const result = await productsService.update(updatedProductRespense);
+
+      expect(result.type).to.equal(null);
+      expect(result.message).to.deep.equal(updatedProductRespense);
+    });
+  });
+
+  describe('Atualizando um produto com id inexistente', () => {
+    it('retorna um erro ao passar um id inexistente', async () => {
+      sinon.stub(productsModel, 'getById').resolves(false);
+
+      const result = await productsService.update({
+        id: 1,
+        name: 'Martelo do Batman',
+      });
+
+      expect(result.type).to.equal('PRODUCT_NOT_FOUND');
+      expect(result.message).to.equal('Product not found');
     });
   });
 
