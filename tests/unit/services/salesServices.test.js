@@ -11,9 +11,9 @@ const {
   saleResponse,
 } = require('./mocks/salesServicesMock');
 
-describe('Verificando service de produto', () => {
+describe('Verificando service de venda', () => {
   describe('Cadastrando uma venda com valores válidos.', () => {
-    it('Retorna o Id do produto cadastrado.', async () => {
+    it('Retorna o Id do venda cadastrado.', async () => {
       sinon.stub(salesModel, 'insert').resolves(3);
       sinon.stub(salesModel, 'getById').resolves(rightSaleBody);
 
@@ -24,7 +24,7 @@ describe('Verificando service de produto', () => {
     });
   });
   describe('cadastro de uma venda com valores inválidos', () => {
-    it('retorna um erro ao passar uma quantidade de produtos inválida', async () => {
+    it('retorna um erro ao passar uma quantidade de vendas inválida', async () => {
       const result = await salesService.create(wrongZeroQuantityBody);
 
       expect(result.type).to.equal('INVALID_VALUE');
@@ -32,7 +32,7 @@ describe('Verificando service de produto', () => {
         "\"quantity\" must be greater than or equal to 1"
       );
     });
-    it('retorna um erro caso tente registrar uma venda de um produtoId inexistente', async () => {
+    it('retorna um erro caso tente registrar uma venda de um vendaId inexistente', async () => {
       const result = await salesService.create(nonexistentProductIdBody);
 
       expect(result.type).to.equal('PRODUCT_NOT_FOUND');
@@ -53,7 +53,7 @@ describe('Verificando service de produto', () => {
     })
   });
 
-  describe('Listar venda por id', () => { 
+  describe('Listar venda por id', () => {
     it('Retorna os dados da venda', async () => {
       // arrange
       sinon.stub(salesModel, 'getById').resolves(saleResponse);
@@ -74,7 +74,27 @@ describe('Verificando service de produto', () => {
       expect(result.type).to.equal('SALE_NOT_FOUND');
       expect(result.message).to.equal('Sale not found');
     })
-   })
+  });
+
+  describe('Deletando uma venda com valores válidos.', () => {
+    it('Deleta venda com sucesso.', async () => {
+      sinon.stub(salesModel, 'deleteById').resolves();
+
+      const result = await salesService.deleteById(1);
+
+      expect(result.type).to.equal(null);
+      expect(result.message).to.deep.equal('');
+    });
+  });
+
+  describe('Deletando uma venda com id inexistente', () => {
+    it('Retorna um erro ao passar um id inexistente', async () => {
+      const result = await salesService.deleteById(999);
+
+      expect(result.type).to.equal('SALE_NOT_FOUND');
+      expect(result.message).to.equal('Sale not found');
+    });
+  });
 
   afterEach(function () {
     sinon.restore();

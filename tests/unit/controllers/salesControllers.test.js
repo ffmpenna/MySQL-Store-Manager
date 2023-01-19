@@ -10,7 +10,7 @@ const { salesController } = require('../../../src/controllers');
 const {
   rightSaleBody,
   saleCreateResponse,
-  wrongSaleNotProductIdBody,
+  wrongSaleNotSaleIdBody,
   wrongSaleNotQuantityBody,
   allSalesResponse, saleResponse,
 } = require('./mocks/salesControllerMocks');
@@ -36,23 +36,23 @@ describe('Teste de unidade do salesController.', () => {
     });
   });
   describe('Cadastrar novas vendas com valores inválidos.', () => {
-    it("Se algum item da requisição não tiver o campo 'productId' deve retornar status 400", async () => {
+    it("Se algum item da requisição não tiver o campo 'SaleId' deve retornar status 400", async () => {
       const res = {};
       const req = {
-        body: wrongSaleNotProductIdBody,
+        body: wrongSaleNotSaleIdBody,
       };
 
       res.status = sinon.stub().returns(res);
       res.json = sinon.stub().returns();
       sinon
         .stub(salesService, 'create')
-        .resolves({ type: 'BAD_REQUEST', message: "'productId' is required" });
+        .resolves({ type: 'BAD_REQUEST', message: "'SaleId' is required" });
 
       await salesController.createSale(req, res);
 
       expect(res.status).to.have.been.calledWith(400);
       expect(res.json).to.have.been.calledWith({
-        message: "'productId' is required",
+        message: "'SaleId' is required",
       });
     });
     it("Se algum item da requisição não tiver o campo 'quantity' deve retornar status 400", async () => {
@@ -128,6 +128,45 @@ describe('Teste de unidade do salesController.', () => {
       expect(res.json).to.have.been.calledWith({ message: 'Sale not found' });
     })
   });
+
+   describe('Deletando uma venda', () => {
+     it('Deve retornar status 204', async () => {
+       const res = {};
+       const req = {
+         params: { id: 1 },
+       };
+
+       res.status = sinon.stub().returns(res);
+       res.json = sinon.stub().returns();
+       sinon
+         .stub(salesService, 'deleteById')
+         .resolves({ type: null, message: '' });
+
+       await salesController.deleteSale(req, res);
+
+       expect(res.status).to.have.been.calledWith(204);
+       expect(res.json).to.have.been.calledWith();
+     });
+     it('Deve retornar um erro caso o id da venda não exita', async () => {
+       const res = {};
+       const req = {
+         params: { id: 999 },
+       };
+
+       res.status = sinon.stub().returns(res);
+       res.json = sinon.stub().returns();
+       sinon
+         .stub(salesService, 'deleteById')
+         .resolves({ type: 'SALE_NOT_FOUND', message: 'Sale not found' });
+
+       await salesController.deleteSale(req, res);
+
+       expect(res.status).to.have.been.calledWith(404);
+       expect(res.json).to.have.been.calledWith({
+         message: 'Sale not found',
+       });
+     });
+   });
 
   afterEach(() => {
     sinon.restore();
