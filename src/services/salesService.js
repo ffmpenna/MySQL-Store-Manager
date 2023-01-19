@@ -9,7 +9,7 @@ const getAll = async () => {
 
 const getById = async (id) => {
   const sale = await salesModel.getById(id);
-  if (!sale.length) return { type: 'SALE_NOT_FOUND', message: 'Sale not found' };
+  if (!sale.length) { return { type: 'SALE_NOT_FOUND', message: 'Sale not found' }; }
   return { type: null, message: sale };
 };
 
@@ -26,8 +26,16 @@ const create = async (saleData) => {
 };
 
 const deleteById = async (id) => {
-  const sale = await salesModel.deleteById(id);
-  if (!sale) { return { type: 'SALE_NOT_FOUND', message: 'Sale not found' }; }
+  const error = schema.validateId(id);
+  if (error.type) return error;
+
+  const saleToDelete = await salesModel.getById(id);
+  if (!saleToDelete.length) {
+    return { type: 'SALE_NOT_FOUND', message: 'Sale not found' };
+  }
+
+  await salesModel.deleteById(id);
+
   return { type: null, message: '' };
 };
 

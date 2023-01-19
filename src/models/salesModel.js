@@ -19,6 +19,7 @@ const getById = async (saleId) => {
     WHERE s.id = ?;`;
 
   const [sale] = await connection.execute(query, [saleId]);
+  console.log(camelize(sale));
   return camelize(sale);
 };
 
@@ -40,8 +41,7 @@ const insert = async (saleData) => {
 
 const deleteById = async (id) => {
   const query = 'DELETE FROM StoreManager.sales WHERE id = ?';
-  const [deletedSale] = await connection.execute(query, [id]);
-  return deletedSale.affectedRows;
+  return connection.execute(query, [id]);
 };
   
 module.exports = {
