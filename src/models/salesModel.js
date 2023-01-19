@@ -40,7 +40,8 @@ const insert = async (saleData) => {
 
 const deleteById = async (id) => {
   const query = 'DELETE FROM StoreManager.sales WHERE id = ?';
-  return connection.execute(query, [id]);
+  const [deletedSale] = await connection.execute(query, [id]);
+  return deletedSale.affectedRows;
 };
   
 module.exports = {
