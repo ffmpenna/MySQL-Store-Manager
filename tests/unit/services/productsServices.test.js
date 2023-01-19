@@ -1,20 +1,20 @@
-const { expect } = require("chai");
-const sinon = require("sinon");
-const { productsService } = require("../../../src/services");
-const { productsModel } = require("../../../src/models");
+const { expect } = require('chai');
+const sinon = require('sinon');
+const { productsService } = require('../../../src/services');
+const { productsModel } = require('../../../src/models');
 
 const {
   allProducts,
   validName,
   invalidName,
   updatedProductRespense,
-} = require("./mocks/productsServicesMocks");
+} = require('./mocks/productsServicesMocks');
 
-describe("Verificando service de produto", () => {
-  describe("Listagem de produtos", () => {
-    it("Retorna a lista completa de produtos", async () => {
+describe('Verificando service de produto', () => {
+  describe('Listagem de produtos', () => {
+    it('Retorna a lista completa de produtos', async () => {
       // arrange
-      sinon.stub(productsModel, "getAll").resolves(allProducts);
+      sinon.stub(productsModel, 'getAll').resolves(allProducts);
 
       // act
       const result = await productsService.getAll();
@@ -25,33 +25,33 @@ describe("Verificando service de produto", () => {
     });
   });
 
-  describe("Busca de um produto", () => {
-    it("retorna um erro caso receba um ID inválido", async () => {
+  describe('Busca de um produto', () => {
+    it('retorna um erro caso receba um ID inválido', async () => {
       // arrange: Especificamente nesse it não temos um arranjo pois nesse fluxo o model não é chamado!
 
       // act
-      const result = await productsService.getById("a");
+      const result = await productsService.getById('a');
 
       // assert
-      expect(result.type).to.equal("INVALID_VALUE");
+      expect(result.type).to.equal('INVALID_VALUE');
       expect(result.message).to.equal('"id" must be a number');
     });
 
-    it("retorna um erro caso a produto não existe", async () => {
+    it('retorna um erro caso a produto não existe', async () => {
       // arrange
-      sinon.stub(productsModel, "getById").resolves(undefined);
+      sinon.stub(productsModel, 'getById').resolves(undefined);
 
       // act
       const result = await productsService.getById(1);
 
       // assert
-      expect(result.type).to.equal("PRODUCT_NOT_FOUND");
-      expect(result.message).to.equal("Product not found");
+      expect(result.type).to.equal('PRODUCT_NOT_FOUND');
+      expect(result.message).to.equal('Product not found');
     });
 
-    it("retorna a produto caso ID existente", async () => {
+    it('retorna a produto caso ID existente', async () => {
       // arrange
-      sinon.stub(productsModel, "getById").resolves(allProducts[0]);
+      sinon.stub(productsModel, 'getById').resolves(allProducts[0]);
 
       // act
       const result = await productsService.getById(1);
@@ -62,10 +62,10 @@ describe("Verificando service de produto", () => {
     });
   });
 
-  describe("Cadastrando um produto com valores válidos.", () => {
-    it("Retorna o Id do produto cadastrado.", async () => {
-      sinon.stub(productsModel, "insert").resolves(1);
-      sinon.stub(productsModel, "getById").resolves(allProducts[0]);
+  describe('Cadastrando um produto com valores válidos.', () => {
+    it('Retorna o Id do produto cadastrado.', async () => {
+      sinon.stub(productsModel, 'insert').resolves(1);
+      sinon.stub(productsModel, 'getById').resolves(allProducts[0]);
 
       const result = await productsService.create(validName);
 
@@ -74,11 +74,11 @@ describe("Verificando service de produto", () => {
     });
   });
 
-  describe("cadastro de um produto com valores inválidos", () => {
-    it("retorna um erro ao passar um nome inválido", async () => {
+  describe('cadastro de um produto com valores inválidos', () => {
+    it('retorna um erro ao passar um nome inválido', async () => {
       const result = await productsService.create(invalidName);
 
-      expect(result.type).to.equal("INVALID_VALUE");
+      expect(result.type).to.equal('INVALID_VALUE');
       expect(result.message).to.equal(
         '"name" length must be at least 5 characters long'
       );
@@ -105,6 +105,26 @@ describe("Verificando service de produto", () => {
         id: 1,
         name: 'Martelo do Batman',
       });
+
+      expect(result.type).to.equal('PRODUCT_NOT_FOUND');
+      expect(result.message).to.equal('Product not found');
+    });
+  });
+
+  describe('Deletando um produto com valores válidos.', () => {
+    it('Deleta produto com sucesso.', async () => {
+      sinon.stub(productsModel, 'deleteById').resolves();
+
+      const result = await productsService.deleteById(1);
+
+      expect(result.type).to.equal(null);
+      expect(result.message).to.deep.equal('');
+    });
+  });
+
+  describe('Deletando um produto com id inexistente', () => {
+    it('Retorna um erro ao passar um id inexistente', async () => {
+      const result = await productsService.deleteById(999);
 
       expect(result.type).to.equal('PRODUCT_NOT_FOUND');
       expect(result.message).to.equal('Product not found');
