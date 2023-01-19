@@ -8,6 +8,7 @@ const {
   validName,
   invalidName,
   updatedProductRespense,
+  filteredProductsResponse,
 } = require('./mocks/productsServicesMocks');
 
 describe('Verificando service de produto', () => {
@@ -128,6 +129,17 @@ describe('Verificando service de produto', () => {
 
       expect(result.type).to.equal('PRODUCT_NOT_FOUND');
       expect(result.message).to.equal('Product not found');
+    });
+  });
+
+  describe('Pesquisando produtos pelo nome.', () => {
+    it('Retorna a lista de produtos filtrados', async () => {
+      sinon.stub(productsModel, 'getByName').resolves(filteredProductsResponse);
+
+      const result = await productsService.getByName('Martelo');
+
+      expect(result.type).to.equal(null);
+      expect(result.message).to.deep.equal(filteredProductsResponse);
     });
   });
 

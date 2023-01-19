@@ -15,6 +15,7 @@ const {
   wrongSizeProductBody,
   wrongProductBody,
   updatedProductRespense,
+  filteredProductsResponse,
 } = require('./mocks/productsControllerMocks');
 
 describe('Teste de unidade do productsController.', () => {
@@ -155,7 +156,7 @@ describe('Teste de unidade do productsController.', () => {
       expect(res.status).to.have.been.calledWith(200);
       expect(res.json).to.have.been.calledWith(updatedProductRespense);
     });
-    it('Deve retornar um erro caso o id do produdo não exita', async () => { 
+    it('Deve retornar um erro caso o id do produdo não exita', async () => {
       const res = {};
       const req = {
         params: { id: 999 },
@@ -171,8 +172,10 @@ describe('Teste de unidade do productsController.', () => {
       await productsController.updateProduct(req, res);
 
       expect(res.status).to.have.been.calledWith(404);
-      expect(res.json).to.have.been.calledWith({ message: 'Product not found' });
-    })
+      expect(res.json).to.have.been.calledWith({
+        message: 'Product not found',
+      });
+    });
   });
 
   describe('Deletando um produto', () => {
@@ -211,6 +214,26 @@ describe('Teste de unidade do productsController.', () => {
       expect(res.json).to.have.been.calledWith({
         message: 'Product not found',
       });
+    });
+  });
+
+  describe('Pesquisando uprodutos pelo nome', () => {
+    it('Deve retornar status 200 e os produtos pesquisados', async () => {
+      const res = {};
+      const req = {
+        query: { q: 'Martelo' },
+      };
+
+      res.status = sinon.stub().returns(res);
+      res.json = sinon.stub().returns();
+      sinon
+        .stub(productsService, 'getByName')
+        .resolves({ type: null, message: filteredProductsResponse });
+
+      await productsController.searchProductsByName(req, res);
+
+      expect(res.status).to.have.been.calledWith(200);
+      expect(res.json).to.have.been.calledWith(filteredProductsResponse);
     });
   });
 

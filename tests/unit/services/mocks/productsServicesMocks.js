@@ -12,9 +12,17 @@ const updatedProductRespense = {
   name: 'Martelo do Batman',
 };
 
+const filteredProductsResponse = [
+  {
+    id: 1,
+    name: 'Martelo de Thor',
+  },
+];
+
 module.exports = {
   allProducts,
   validName,
   invalidName,
   updatedProductRespense,
+  filteredProductsResponse,
 };

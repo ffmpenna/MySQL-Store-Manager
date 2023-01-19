@@ -9,6 +9,13 @@ const allProductsResponse = [
   { id: 3, name: "Escudo do Capitão América" },
 ];
 
+const filteredProductsResponse = [
+  {
+    id: 1,
+    name: 'Martelo de Thor',
+  },
+];
+
 const newProductResponse = {
   id: 4,
   name: "ProdutoX",
@@ -35,4 +42,5 @@ module.exports = {
   wrongSizeProductBody,
   wrongProductBody,
   updatedProductRespense,
+  filteredProductsResponse,
 };

@@ -13,6 +13,13 @@ const updatedProductRespense = {
   name: 'Martelo do Batman',
 };
 
+const filteredProductsResponse = [
+  {
+    id: 1,
+    name: 'Martelo de Thor',
+  },
+];
+
 const productUpdated = {
   fieldCount: 0,
   affectedRows: 1,
@@ -38,4 +45,5 @@ module.exports = {
   updatedProductRespense,
   productUpdated,
   productDeleted,
+  filteredProductsResponse,
 };
