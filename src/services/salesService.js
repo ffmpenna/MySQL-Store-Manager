@@ -25,8 +25,15 @@ const create = async (saleData) => {
   return { type: null, message: newSaleFormatter(newSaleId, newSale) };
 };
 
+const deleteById = async (id) => {
+  const sale = await salesModel.deleteById(id);
+  if (!sale) { return { type: 'SALE_NOT_FOUND', message: 'Sale not found' }; }
+  return { type: null, message: '' };
+};
+
 module.exports = {
   create,
   getAll,
   getById,
+  deleteById,
 };
