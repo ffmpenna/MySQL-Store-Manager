@@ -1,5 +1,6 @@
 const { salesModel } = require('../models');
 const newSaleFormatter = require('../utils/newSaleFormatter');
+const updatedSaleFormatter = require('../utils/updatedSaleFormatter');
 const schema = require('./validations/validationsInputValues');
 
 const getAll = async () => {
@@ -39,9 +40,28 @@ const deleteById = async (id) => {
   return { type: null, message: '' };
 };
 
+const update = async (id, saleData) => {
+  let error = schema.validateSalesFields(saleData);
+  if (error.type) return error;
+  error = await Promise.resolve(schema.validateSalesInputs(saleData));
+  if (error.type) return error;
+  error = schema.validateId(id);
+  if (error.type) return error;
+  const saleToUpdate = await salesModel.getById(id);
+  if (!saleToUpdate.length) {
+    return { type: 'SALE_NOT_FOUND', message: 'Sale not found' };
+  }
+
+  const updatedSaleId = await salesModel.update(id, saleData);
+  const updatedSale = await salesModel.getById(updatedSaleId);
+
+  return { type: null, message: updatedSaleFormatter(updatedSaleId, updatedSale) };
+};
+
 module.exports = {
   create,
   getAll,
   getById,
   deleteById,
+  update,
 };

@@ -34,9 +34,21 @@ const deleteSale = async (req, res) => {
   res.status(204).json(message); 
 };
 
+const updateSale = async (req, res) => {
+  console.log('ueun');
+  const { id } = req.params;
+  const updatedData = req.body;
+
+  const { type, message } = await salesService.update(id, updatedData);
+  if (type) return res.status(errorMap.mapError(type)).json({ message });
+  
+  res.status(200).json(message);
+};
+
 module.exports = {
   createSale,
   listSales,
   getSale,
   deleteSale,
+  updateSale,
 };
