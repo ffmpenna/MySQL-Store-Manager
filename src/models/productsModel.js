@@ -23,9 +23,15 @@ const update = (id, name) => {
   return connection.execute(query, [name, id]);
 };
 
+const deleteById = (id) => {
+  const query = 'DELETE FROM StoreManager.products WHERE id = ?';
+  return connection.execute(query, [id]);
+};
+
 module.exports = {
   getAll,
   getById,
   insert,
   update,
+  deleteById,
 };
