@@ -5,13 +5,12 @@ const validateNewProductFields = require('../middlewares/validateNewProductField
 const router = express.Router();
 
 router.get('/', productsController.listProducts);
-
-router.get('/:id', productsController.getProduct);
-
 router.post('/', validateNewProductFields, productsController.createProduct);
 
-router.put('/:id', validateNewProductFields, productsController.updateProduct);
+router.get('/search', productsController.searchProductsByName);
 
+router.get('/:id', productsController.getProduct);
+router.put('/:id', validateNewProductFields, productsController.updateProduct);
 router.delete('/:id', productsController.deleteProduct);
 
 module.exports = router;
