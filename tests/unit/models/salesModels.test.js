@@ -3,7 +3,7 @@ const sinon = require("sinon");
 const { salesModel } = require("../../../src/models");
 
 const connection = require("../../../src/models/connection");
-const { rightSaleBody, saleResponse, allSalesResponse, saleDeleted } = require("./mocks/salesModelMocks");
+const { rightSaleBody, saleResponse, allSalesResponse, saleDeleted, otherProductIdSaleBody, saleUpdatedResponse } = require("./mocks/salesModelMocks");
 
 describe("Testes de unidade do model de vendas", () => {
 
@@ -38,6 +38,16 @@ describe("Testes de unidade do model de vendas", () => {
     const result = await salesModel.deleteById(1);
 
     expect(result[0].affectedRows).to.be.deep.equal(1);
+  });
+
+  it('Atualizando uma venda', async () => {
+    const { saleId } = saleUpdatedResponse;
+
+    sinon.stub(connection, 'execute').resolves(saleId);
+
+    const result = await salesModel.update(saleId, otherProductIdSaleBody);
+
+    expect(result).to.be.deep.equal(saleId);
   });
 
 

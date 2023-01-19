@@ -12,7 +12,7 @@ const {
   saleCreateResponse,
   wrongSaleNotSaleIdBody,
   wrongSaleNotQuantityBody,
-  allSalesResponse, saleResponse,
+  allSalesResponse, saleResponse, otherProductIdSaleBody, saleUpdatedResponse,
 } = require('./mocks/salesControllerMocks');
 
 describe('Teste de unidade do salesController.', () => {
@@ -167,6 +167,47 @@ describe('Teste de unidade do salesController.', () => {
        });
      });
    });
+  
+  describe('Atualizando uma venda', () => {
+    it('Deve retornar status 200 e os dados da venda.', async () => {
+      const res = {};
+      const req = {
+        params: { id: 1 },
+        body: otherProductIdSaleBody,
+      };
+
+      res.status = sinon.stub().returns(res);
+      res.json = sinon.stub().returns();
+      sinon
+        .stub(salesService, 'update')
+        .resolves({ type: null, message: saleUpdatedResponse });
+
+      await salesController.updateSale(req, res);
+
+      expect(res.status).to.have.been.calledWith(200);
+      expect(res.json).to.have.been.calledWith(saleUpdatedResponse);
+    });
+    it('Deve retornar um erro caso o id da venda não exita', async () => {
+      const res = {};
+      const req = {
+        params: { id: 999 },
+        body: otherProductIdSaleBody,
+      };
+
+      res.status = sinon.stub().returns(res);
+      res.json = sinon.stub().returns();
+      sinon
+        .stub(salesService, 'update')
+        .resolves({ type: 'SALE_NOT_FOUND', message: 'Sale not found' });
+
+      await salesController.updateSale(req, res);
+
+      expect(res.status).to.have.been.calledWith(404);
+      expect(res.json).to.have.been.calledWith({
+        message: 'Sale not found',
+      });
+    });
+  });
 
   afterEach(() => {
     sinon.restore();

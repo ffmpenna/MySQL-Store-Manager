@@ -8,8 +8,8 @@ const nonexistentProductIdBody2 = [
 const wrongZeroQuantityBody = [{ productId: 1, quantity: 0 }];
 const wrongZeroNegativeBody = [{ productId: 1, quantity: -1 }];
 const otherProductIdSaleBody = [
-  { productId: 1, quantity: 1 },
-  { productId: 3, quantity: 5 },
+  { productId: 1, quantity: 10 },
+  { productId: 2, quantity: 50 },
 ];
 const rightSaleBody = [
   { productId: 1, quantity: 1 },
@@ -22,6 +22,20 @@ const saleCreateResponse = {
     { productId: 2, quantity: 5 },
   ]
 }
+
+const saleUpdatedResponse = {
+  saleId: 1,
+  itemsUpdated: [
+    {
+      productId: 1,
+      quantity: 10,
+    },
+    {
+      productId: 2,
+      quantity: 50,
+    },
+  ],
+};
 
 const allSalesResponse = [
   {
@@ -69,4 +83,5 @@ module.exports = {
   saleCreateResponse,
   allSalesResponse,
   saleResponse,
+  saleUpdatedResponse,
 };

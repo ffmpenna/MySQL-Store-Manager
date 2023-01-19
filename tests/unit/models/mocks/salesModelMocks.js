@@ -56,6 +56,20 @@ const saleResponse = [
   },
 ];
 
+const saleUpdatedResponse = {
+  saleId: 1,
+  itemsUpdated: [
+    {
+      productId: 1,
+      quantity: 10,
+    },
+    {
+      productId: 2,
+      quantity: 50,
+    },
+  ],
+};
+
 const saleDeleted = {
   fieldCount: 0,
   affectedRows: 1,
@@ -78,4 +92,5 @@ module.exports = {
   allSalesResponse,
   saleResponse,
   saleDeleted,
+  saleUpdatedResponse,
 };
