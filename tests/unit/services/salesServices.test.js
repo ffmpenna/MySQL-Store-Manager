@@ -13,6 +13,7 @@ const {
   saleUpdatedResponse,
   wrongSaleNotProductIdBody,
   wrongSaleNotQuantityBody,
+  wrongZeroNegativeBody,
 } = require('./mocks/salesServicesMock');
 
 describe('Verificando service de venda', () => {
