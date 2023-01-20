@@ -110,6 +110,17 @@ describe('Verificando service de produto', () => {
       expect(result.type).to.equal('PRODUCT_NOT_FOUND');
       expect(result.message).to.equal('Product not found');
     });
+    it('retorna um erro ao passar um nome inválido', async () => {
+      const result = await productsService.update({
+        id: 1,
+        name: invalidName,
+      });
+
+      expect(result.type).to.equal('INVALID_VALUE');
+      expect(result.message).to.equal(
+        '"name" length must be at least 5 characters long'
+      );
+    });
   });
 
   describe('Deletando um produto com valores válidos.', () => {
@@ -123,8 +134,15 @@ describe('Verificando service de produto', () => {
     });
   });
 
-  describe('Deletando um produto com id inexistente', () => {
-    it('Retorna um erro ao passar um id inexistente', async () => {
+  describe('Deletando um produto com valores inválidos', () => {
+    it('Retorna um erro ao passar um id inválido', async () => {
+      const result = await productsService.deleteById('invalid_value');
+
+      expect(result.type).to.equal('INVALID_VALUE');
+      expect(result.message).to.equal('"id" must be a number');
+    });
+
+  it('Retorna um erro ao passar um id inexistente', async () => {
       const result = await productsService.deleteById(999);
 
       expect(result.type).to.equal('PRODUCT_NOT_FOUND');

@@ -11,6 +11,8 @@ const {
   saleResponse,
   otherProductIdSaleBody,
   saleUpdatedResponse,
+  wrongSaleNotProductIdBody,
+  wrongSaleNotQuantityBody,
 } = require('./mocks/salesServicesMock');
 
 describe('Verificando service de venda', () => {
@@ -87,7 +89,14 @@ describe('Verificando service de venda', () => {
     });
   });
 
-  describe('Deletando uma venda com id inexistente', () => {
+  describe('Deletando uma venda com valores inválidos', () => {
+    it('Retorna um erro ao passar um id inválido', async () => {
+      const result = await salesService.deleteById('invalid_id');
+
+      expect(result.type).to.equal('INVALID_VALUE');
+      expect(result.message).to.equal('"id" must be a number');
+    });
+
     it('Retorna um erro ao passar um id inexistente', async () => {
       const result = await salesService.deleteById(999);
 
@@ -108,8 +117,59 @@ describe('Verificando service de venda', () => {
     });
   });
 
-  describe('Atualizando uma venda com id inexistente', () => {
-    it('retorna um erro ao passar um id inexistente', async () => {
+  describe('Atualizando uma venda com valores inválidos', () => {
+    it('retorna um erro ao passar um id inválido', async () => {
+      const result = await salesService.update(
+        'invalid_id',
+        otherProductIdSaleBody
+      );
+
+      expect(result.type).to.equal('INVALID_VALUE');
+      expect(result.message).to.equal('"id" must be a number');
+    });
+
+    it('retorna um erro ao passar uma venda sem o campo "productId"', async () => {
+      const result = await salesService.update(1, wrongSaleNotProductIdBody);
+
+      expect(result.type).to.equal('INVALID_VALUE');
+      expect(result.message).to.equal('"productId" is required');
+    });
+
+    it('retorna um erro ao passar uma venda sem o campo "quantity"', async () => {
+      const result = await salesService.update(1, wrongSaleNotQuantityBody);
+
+      expect(result.type).to.equal('INVALID_VALUE');
+      expect(result.message).to.equal('"quantity" is required');
+    });
+
+    it('retorna um erro ao passar uma venda com quantidade igual a zero', async () => {
+      const result = await salesService.update(1, wrongZeroQuantityBody);
+
+      expect(result.type).to.equal('INVALID_VALUE');
+      expect(result.message).to.equal(
+        '"quantity" must be greater than or equal to 1'
+      );
+    });
+
+     it('retorna um erro ao passar uma venda com quantidade negativa', async () => {
+       const result = await salesService.update(1, wrongZeroNegativeBody);
+
+       expect(result.type).to.equal('INVALID_VALUE');
+       expect(result.message).to.equal(
+         '"quantity" must be greater than or equal to 1'
+       );
+     });
+    
+    it('retorna um erro ao passar uma venda com quantidade negativa', async () => {
+      const result = await salesService.update(1, nonexistentProductIdBody);
+
+      expect(result.type).to.equal('PRODUCT_NOT_FOUND');
+      expect(result.message).to.equal(
+        'Product not found'
+      );
+    });
+
+    it('retorna um erro ao passar um produto com id inexistente', async () => {
       const result = await salesService.update(999, otherProductIdSaleBody);
 
       expect(result.type).to.equal('SALE_NOT_FOUND');
